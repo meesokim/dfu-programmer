@@ -4,6 +4,14 @@ autoheader
 automake --foreign --add-missing --copy
 autoconf
 
+if [ "$(echo `uname`)" = "MINGW32_NT-10.0" ];  then
+	cp windows/usb.h /mingw32/include
+	cp windows/libusb.a /mingw32/lib
+	cp windows/libusb0.dll /usr/local/bin
+	cp windows/libusb0_x86.dll /usr/local/bin
+	./configure --disable-libusb_1_0
+	make install
+fi
 if [ "$(echo `uname`)" = "Linux" ]; then
     TARGET_START_LINE=$( grep START_TARGET_LIST_LINE -n src/arguments.c  | \
                             sed "s/^\(.*\):.*/\1/")
